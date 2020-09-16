@@ -15,7 +15,7 @@ function Card({
         backgroundImage: `url('https://image.tmdb.org/t/p/w500${posterPath}')`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
-        height: '500px',
+        height: '50vh',
         width: '500px',
       }}
     >

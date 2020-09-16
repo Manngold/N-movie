@@ -4,6 +4,11 @@ import Movies from '../Movies';
 import Loading from '../Loading';
 import Error from '../Error';
 
+const filterByDate = (item) => {
+  const nowDate = new Date();
+  return new Date(item.release_date) > nowDate;
+};
+
 function Home() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
@@ -14,7 +19,7 @@ function Home() {
         const {
           data: { results },
         } = await getUpComing();
-        setData(results);
+        setData(results.filter(filterByDate));
       } catch (error) {
         setError(true);
       } finally {
