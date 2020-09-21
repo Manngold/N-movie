@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+const filterByDate = (item) => {
+  const nowDate = new Date();
+  return new Date(item.release_date) > nowDate;
+};
+
 const api = axios.create({
   baseURL: 'https://api.themoviedb.org/3/movie',
   params: {
@@ -8,4 +13,11 @@ const api = axios.create({
   },
 });
 
-export const getUpComing = () => api.get('/upcoming');
+export const getUpComing = (page) =>
+  api.get('/upcoming', { params: { page } }).then((results) => {
+    const {
+      data: { results: movies },
+    } = results;
+
+    return movies.filter((item) => filterByDate(item));
+  });

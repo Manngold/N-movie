@@ -4,23 +4,23 @@ import Movies from '../Movies';
 import Loading from '../Loading';
 import Error from '../Error';
 
-const filterByDate = (item) => {
-  const nowDate = new Date();
-  return new Date(item.release_date) > nowDate;
-};
-
 function Home() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [error, setError] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
+      let page = 1;
       try {
-        const {
-          data: { results },
-        } = await getUpComing();
-        setData(results.filter(filterByDate));
+        let results = await getUpComing(page);
+        while (results.length < 20) {
+          const newResults = await getUpComing(++page);
+          results = [...results, ...newResults];
+          console.log(results);
+        }
+        setData(results);
       } catch (error) {
+        console.log(error);
         setError(true);
       } finally {
         setLoading(false);
